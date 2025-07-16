@@ -31,7 +31,8 @@ document.querySelector("#app").innerHTML = `
         <section id="about-section">
         <h2 class="section-title">About Pocket Pebble Shop</h2>
         </section>
-        <section id="contact-form">Contact us to make a purchase!</section>
+        <section id="contact-form">
+        <h2 class="section-title">Contact us to make a purchase!</h2></section>
       </main>
       <footer>copyright stuff blah blah blah</footer>
     
