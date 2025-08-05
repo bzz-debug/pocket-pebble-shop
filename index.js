@@ -23,7 +23,9 @@ app.post("/pay", (req, res) => {
 
 app.get("/complete-order", (req, res) => {
   return capturePayment(req.query.token)
-    .then(result)
+    .then((result) => {
+      res.send(`Order Complete! Order ID: ${result.id}`);
+    })
     .catch((error) => {
       res.send("Error: " + error);
     });
