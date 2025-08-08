@@ -1,0 +1,18 @@
+{
+  "header": {
+    "connection": "close",
+    "content-length": "322",
+    "content-type": "application/json; charset=utf-8",
+    "date": "Fri, 08 Aug 2025 14:37:39 GMT",
+    "etag": "W/\"142-BoRDxjDJE6ydJ3NMt7JEsju9PRE\"",
+    "x-powered-by": "Express"
+  },
+  "req": {
+    "data": undefined,
+    "headers": {},
+    "method": "GET",
+    "url": "http://127.0.0.1:34493/api/items"
+  },
+  "status": 200,
+  "text": "{\"items\":[{\"item_id\":1,\"name\":\"Pet Portrait\",\"price\":20},{\"item_id\":2,\"name\":\"Butterfly\",\"price\":8},{\"item_id\":3,\"name\":\"Robin\",\"price\":5},{\"item_id\":4,\"name\":\"Welcome Stone\",\"price\":10},{\"item_id\":5,\"name\":\"Large House\",\"price\":10},{\"item_id\":6,\"name\":\"Small House\",\"price\":6},{\"item_id\":7,\"name\":\"Sunflower\",\"price\":8}]}"
+}

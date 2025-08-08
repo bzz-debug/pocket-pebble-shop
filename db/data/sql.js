@@ -1,9 +1,14 @@
-import sqlite3 from "sqlite3";
-const db = new sqlite3.Database("./db.sqlite");
+const { db } = require("../../connect.js");
 db.run("PRAGMA foreign_keys = ON");
 
 db.serialize(() => {
-  db.run("DROP TABLE IF EXISTS Custom", (error) => {
+  db.run("DROP TABLE IF EXISTS items", (error) => {
+    if (error) {
+      throw error;
+    }
+  });
+
+  db.run("DROP TABLE IF EXISTS orders", (error) => {
     if (error) {
       throw error;
     }
@@ -13,7 +18,9 @@ db.serialize(() => {
     CREATE TABLE items(
     item_id INTEGER PRIMARY KEY, 
     name VARCHAR (100), 
-    price DECIMAL(10, 2)
+    price DECIMAL(10, 2),
+    img_url VARCHAR
+
     )`);
 
   db.run(`CREATE TABLE orders(
@@ -26,33 +33,33 @@ db.serialize(() => {
     )`);
 
   db.run(`
-    INSERT INTO items(name, price)
-    VALUES ('Pet Portrait', '20')
+    INSERT INTO items(name, price, img_url)
+    VALUES ('Pet Portrait', '20', 'custom/PP.29.03.20252.jpg')
     `);
 
   db.run(`
-    INSERT INTO items(name, price)
-    VALUES ('Butterfly', '8')
+    INSERT INTO items(name, price, img_url)
+    VALUES ('Butterfly', '8', 'premade/pebble-profile-picture.jpg')
     `);
   db.run(`
-    INSERT INTO items(name, price)
-    VALUES ('Robin', '5')
+    INSERT INTO items(name, price, img_url)
+    VALUES ('Robin', '5', 'premade/PP.29.03.202515.jpg')
     `);
   db.run(`
-    INSERT INTO items(name, price)
-    VALUES ('Welcome Stone', '10')
+    INSERT INTO items(name, price, img_url)
+    VALUES ('Welcome Stone', '10', 'premade/welcome-stone.jpg')
     `);
   db.run(`
-    INSERT INTO items(name, price)
-    VALUES ('Large House', '10')
+    INSERT INTO items(name, price, img_url)
+    VALUES ('Large House', '10', 'premade/house-stone.jpg')
     `);
   db.run(`
-    INSERT INTO items(name, price)
-    VALUES ('Small House', '6')
+    INSERT INTO items(name, price, img_url)
+    VALUES ('Small House', '6', 'premade/house-stone.jpg')
     `);
   db.run(`
-    INSERT INTO items(name, price)
-    VALUES ('Sunflower', '8')
+    INSERT INTO items(name, price, img_url)
+    VALUES ('Sunflower', '8', 'premade/PP.29.03.20259.jpg')
     `);
 });
 

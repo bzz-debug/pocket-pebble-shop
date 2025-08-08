@@ -2,13 +2,16 @@
   "name": "pocket-pebble-shop",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "jest"
   },
   "devDependencies": {
+    "husky": "^8.0.2",
+    "jest": "^30.0.5",
+    "supertest": "^7.1.4",
     "vite": "^7.0.4"
   },
   "dependencies": {
