@@ -16,12 +16,30 @@ describe("GET /api/items", () => {
       .get("/api/items")
       .expect(200)
       .then(({ body }) => {
-        expect(body.items).toEqual("I have no idea");
+        expect(body.items[0]).toMatchObject({
+          item_id: expect.any(Number),
+          name: expect.any(String),
+          price: expect.any(Number),
+        });
       });
   });
 });
-// describe("GET/api/items:item_id");
+describe.only("GET/api/items:item_id", () => {
+  test("returns the specified item", () => {
+    return request(app)
+      .get("/api/items/2")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.item).toMatchObject({
+          item_id: expect.any(Number),
+          name: expect.any(String),
+          price: expect.any(Number),
+        });
+      });
+  });
+});
 // describe.todo("GET/api/items (sorting queries");
+
 // describe("POST /api/orders");
 
 // describe("POST /pay", () => {

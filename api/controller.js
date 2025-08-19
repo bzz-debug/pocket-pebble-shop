@@ -1,6 +1,6 @@
 const { createOrder, capturePayment } = require("./model.paypal.js");
 
-const { selectItems } = require("./model.js");
+const { selectItems, selectItemById } = require("./model.js");
 
 exports.payment = (req, res) => {
   return createOrder()
@@ -23,11 +23,23 @@ exports.completeOrder = (req, res) => {
 };
 
 exports.getItems = (req, res, next) => {
-  console.log("in the controller");
   return selectItems()
     .then((items) => {
       //   console.log(items);
       res.status(200).send({ items });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+//should I combine these two into one???
+exports.getItemById = (req, res, next) => {
+  // console.log("in the controller");
+  const id = req.params.item_id;
+  console.log(id);
+  return selectItemById(id)
+    .then((item) => {
+      res.status(200).send({ item });
     })
     .catch((err) => {
       next(err);

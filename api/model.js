@@ -13,3 +13,16 @@ exports.selectItems = () => {
     });
   });
 };
+
+exports.selectItemById = (id) => {
+  return new Promise((resolve, reject) => {
+    db.get(`SELECT * FROM items WHERE item_id=?`, [id], (error, rows) => {
+      if (error) {
+        reject(error);
+      } else {
+        console.log(rows);
+        resolve(rows);
+      }
+    });
+  });
+};
