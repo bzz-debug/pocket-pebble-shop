@@ -1,5 +1,4 @@
-const sqlite3 = require("sqlite3").verbose();
-exports.db = new sqlite3.Database("./db.sqlite");
+const { Pool } = require("pg");
 
 const ENV = process.env.NODE_ENV || "development";
 
