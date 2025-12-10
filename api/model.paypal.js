@@ -18,9 +18,23 @@ function generateAccessToken() {
   //make sure to error handle here
 }
 
-const createOrder = () => {
+const createOrder = (totalPrice) => {
+  console.log("🎯 createOrder function called with:", totalPrice);
+  console.log("🌐 PAYPAL_BASE_URL:", process.env.PAYPAL_BASE_URL);
+  console.log(
+    "🔑 PAYPAL_CLIENT_ID:",
+    process.env.PAYPAL_CLIENT_ID ? "SET" : "MISSING"
+  );
+  console.log(
+    "🔒 PAYPAL_SECRET:",
+    process.env.PAYPAL_SECRET ? "SET" : "MISSING"
+  );
+  console.log("🏠 BASE_URL:", process.env.BASE_URL);
   return generateAccessToken()
     .then((accessToken) => {
+      console.log("✅ Got access token, making PayPal order...");
+      console.log("💰 Total price:", totalPrice);
+
       return axios({
         url: process.env.PAYPAL_BASE_URL + "/v2/checkout/orders",
         method: "post",
@@ -34,22 +48,22 @@ const createOrder = () => {
             {
               items: [
                 {
-                  name: "robin pebble",
-                  description: "when robins appear, loved ones are near",
+                  name: "basket",
+                  description: "whole basket amount",
                   quantity: 1,
                   unit_amount: {
                     currency_code: "GBP",
-                    value: "5",
+                    value: `${totalPrice}`,
                   },
                 },
               ],
               amount: {
                 currency_code: "GBP",
-                value: "5",
+                value: `${totalPrice}`,
                 breakdown: {
                   item_total: {
                     currency_code: "GBP",
-                    value: "5",
+                    value: `${totalPrice}`,
                   },
                 },
               },
@@ -60,14 +74,20 @@ const createOrder = () => {
             cancel_url: process.env.BASE_URL + "/cancel-order",
             user_action: "PAY_NOW",
             brand_name: "Pocket Pebbles",
-            //can I just have the endpoint here, like I did in the html file with
           },
         }),
       });
     })
     .then((response) => {
-      //   console.log(response.data);
+      console.log("📦 PayPal response:", response.data);
       return response.data.links.find((link) => link.rel === "approve").href;
+    })
+    .catch((error) => {
+      console.log(
+        "❌ Error in createOrder:",
+        error.response?.data || error.message
+      );
+      throw error;
     });
 };
 

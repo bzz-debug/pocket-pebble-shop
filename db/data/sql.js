@@ -32,6 +32,13 @@ db.serialize(() => {
     
     )`);
 
+  db.run(`CREATE TABLE IF NOT EXISTS admin(
+    admin_id INTEGER PRIMARY KEY,
+     admin_email VARCHAR,
+      password VARCHAR
+        
+    )`);
+
   db.run(`
     INSERT INTO items(name, price, img_url)
     VALUES ('Pet Portrait', '20', 'custom/PP.29.03.20252.jpg')

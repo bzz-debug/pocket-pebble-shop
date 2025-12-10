@@ -3,11 +3,23 @@ const { createOrder, capturePayment } = require("./model.paypal.js");
 const { selectItems, selectItemById } = require("./model.js");
 
 exports.payment = (req, res) => {
-  return createOrder()
+  console.log("🚀 Payment endpoint hit!");
+  console.log("Method:", req.method);
+  console.log("URL:", req.url);
+  console.log("Body:", req.body);
+  console.log("🧪 createOrder type:", typeof createOrder);
+  console.log(
+    "🧪 createOrder function:",
+    createOrder.toString().substring(0, 100)
+  );
+  const { totalPrice } = req.body;
+  return createOrder(totalPrice)
     .then((url) => {
+      console.log("🔗 Redirecting to PayPal:", url);
       res.redirect(url);
     })
     .catch((error) => {
+      console.log("❌ Error in payment controller:", error);
       res.send("Error: " + error);
     });
 };
@@ -15,7 +27,8 @@ exports.payment = (req, res) => {
 exports.completeOrder = (req, res) => {
   return capturePayment(req.query.token)
     .then((result) => {
-      res.send(`Order Complete! Order ID: ${result.id}`);
+      // res.send(`Order Complete! Order ID: ${result.id}`);
+      res.redirect(`http://localhost:5173/order-confirmation`);
     })
     .catch((error) => {
       res.send("Error: " + error);
