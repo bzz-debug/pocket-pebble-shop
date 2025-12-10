@@ -4,7 +4,7 @@ const passport = require("passport");
 const bcrypt = require("bcrypt");
 const { addUsers } = require("./model.js");
 require("../services/passport.js");
-const SQLiteStore = require("connect-sqlite3")(session);
+const pgSession = require("connect-pg-simple")(session);
 //how does this work?
 const { ensureAuthenticated } = require("../services/middlewares/auth.js");
 
@@ -36,7 +36,9 @@ app.use(
     secret: "PP2025",
     resave: false,
     saveUninitialized: false,
-    store: new SQLiteStore({ db: "db.sqlite" }),
+    store: new pgSession({
+      conString: process.env.DATABASE_URL,
+    }),
     cookie: {
       sameSite: "lax",
     },
