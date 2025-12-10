@@ -38,7 +38,7 @@ exports.completeOrder = (req, res) => {
 exports.getItems = (req, res, next) => {
   return selectItems()
     .then((items) => {
-      //   console.log(items);
+      console.log(items);
       res.status(200).send({ items });
     })
     .catch((err) => {
