@@ -52,9 +52,9 @@ app.use(passport.session());
 app.use(express.urlencoded({ extended: true }));
 //if images dont render, come back to check this
 
-app.get("/", (req, res) => {
-  res.render("index");
-});
+// app.get("/", (req, res) => {
+//   res.render("index");
+// });
 app.get("/api/items", getItems);
 app.get("/api/items/:item_id", getItemById);
 
