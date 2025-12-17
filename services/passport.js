@@ -8,6 +8,7 @@ passport.use(
   new LocalStrategy(
     { usernameField: "email" },
     async (email, password, done) => {
+      console.log(email, password);
       try {
         const user = await findUsers(email);
         console.log(user);
@@ -17,6 +18,7 @@ passport.use(
         }
         //make more generic when pushing to prod, to make more secure
         const isMatch = await bcrypt.compare(password, user.password);
+        console.log(isMatch);
 
         if (!isMatch) {
           return done(null, false, { error: "incorrect password" });
