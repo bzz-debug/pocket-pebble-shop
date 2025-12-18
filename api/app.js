@@ -32,6 +32,10 @@ app.use(
 app.use("/images", express.static(path.join(__dirname, "../assets")));
 app.use(express.json());
 
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", 1);
+}
+
 app.use(
   session({
     secret: "PP2025",
@@ -41,7 +45,7 @@ app.use(
       conString: process.env.DATABASE_URL,
     }),
     cookie: {
-      sameSite: "lax",
+      sameSite: "none",
       secure: process.env.NODE_ENV === "production",
     },
   })
