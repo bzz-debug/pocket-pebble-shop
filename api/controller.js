@@ -1,6 +1,6 @@
 const { createOrder, capturePayment } = require("./model.paypal.js");
 
-const { selectItems, selectItemById } = require("./model.js");
+const { selectItems, selectItemById, addItems } = require("./model.js");
 
 exports.payment = (req, res) => {
   console.log("🚀 Payment endpoint hit!");
@@ -53,6 +53,19 @@ exports.getItemById = (req, res, next) => {
   return selectItemById(id)
     .then((item) => {
       res.status(200).send({ item });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.addItem = (req, res, next) => {
+  const { name, price, imgUrl, description } = req.body;
+  console.log(name, description, price, imgUrl);
+
+  return addItems(name, price, imgUrl, description)
+    .then((item) => {
+      res.status(201).send({ msg: "item added to the database" });
     })
     .catch((err) => {
       next(err);

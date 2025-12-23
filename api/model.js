@@ -29,18 +29,26 @@ exports.selectItemById = (id) => {
     });
 };
 
-exports.addItems = (name, description, image) => {
+exports.addItems = (name, price, imgUrl, description) => {
+  console.log("in the model>>>>>>", { name, price, imgUrl, description });
   return db
     .query(
       `INSERT INTO items(
+
       name, 
-      description,
-      img_url
-      ) VALUES ($1, $2, $3) RETURNING *`,
-      [name, description, image]
+      price,
+      img_url,
+      description
+      ) VALUES ($1, $2, $3, $4) RETURNING *`,
+      [name, price, "premade/" + imgUrl, description]
     )
     .then((result) => {
+      console.log("in the model >>>> ", result);
       return result.rows[0];
+    })
+    .catch((error) => {
+      console.error("Error in addItems:", error);
+      throw error;
     });
 };
 

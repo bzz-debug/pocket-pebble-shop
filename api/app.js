@@ -17,6 +17,7 @@ const {
   completeOrder,
   getItems,
   getItemById,
+  addItem,
 } = require("./controller.js");
 const path = require("path");
 const cors = require("cors");
@@ -122,6 +123,8 @@ app.get("/logout", (req, res) => {
     res.status(204).send();
   });
 });
+
+app.post("/api/items", addItem);
 
 app.all(/(.*)/, (req, res) => {
   res.status(404).send({ status: 404, msg: "Non-existent endpoint" });

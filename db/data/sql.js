@@ -1,74 +1,72 @@
+require("dotenv").config();
 const { db } = require("../../connect.js");
-db.run("PRAGMA foreign_keys = ON");
 
-db.serialize(() => {
-  db.run("DROP TABLE IF EXISTS items", (error) => {
-    if (error) {
-      throw error;
-    }
-  });
+const seed = async () => {
+  try {
+    await db.query("DROP TABLE IF EXISTS orders");
+    await db.query("DROP TABLE IF EXISTS items");
 
-  db.run("DROP TABLE IF EXISTS orders", (error) => {
-    if (error) {
-      throw error;
-    }
-  });
+    await db.query(`
+      CREATE TABLE items(
+      item_id SERIAL PRIMARY KEY, 
+      name VARCHAR (100), 
+      price DECIMAL(10, 2),
+      img_url VARCHAR,
+      description TEXT
+  
+      )`);
 
-  db.run(`
-    CREATE TABLE items(
-    item_id INTEGER PRIMARY KEY, 
-    name VARCHAR (100), 
-    price DECIMAL(10, 2),
-    img_url VARCHAR
+    await db.query(`CREATE TABLE orders(
+      order_id SERIAL PRIMARY KEY,
+      item_id INT REFERENCES items(item_id),
+      customer_name VARCHAR,
+      address VARCHAR,
+      postcode VARCHAR
+      
+      )`);
 
-    )`);
+    // await db.query(`CREATE TABLE IF NOT EXISTS admin(
+    //   admin_id SERIAL PRIMARY KEY,
+    //    admin_email VARCHAR,
+    //     password VARCHAR
 
-  db.run(`CREATE TABLE orders(
-    order_id INTEGER PRIMARY KEY,
-    item_id INT REFERENCES items(item_id),
-    customer_name VARCHAR,
-    address VARCHAR,
-    postcode VARCHAR
-    
-    )`);
+    //   )`);
 
-  db.run(`CREATE TABLE IF NOT EXISTS admin(
-    admin_id INTEGER PRIMARY KEY,
-     admin_email VARCHAR,
-      password VARCHAR
-        
-    )`);
+    await db.query(`
+      INSERT INTO items(name, price, img_url, description)
+      VALUES ('Pet Portrait', 20, 'custom/PP.29.03.20252.jpg', NULL)
+      `);
 
-  db.run(`
-    INSERT INTO items(name, price, img_url)
-    VALUES ('Pet Portrait', '20', 'custom/PP.29.03.20252.jpg')
-    `);
+    await db.query(`
+      INSERT INTO items(name, price, img_url, description)
+      VALUES ('Butterfly', 8, 'premade/pebble-profile-picture.jpg', NULL)
+      `);
+    await db.query(`
+      INSERT INTO items(name, price, img_url, description)
+      VALUES ('Robin', 5, 'premade/PP.29.03.202515.jpg', NULL)
+      `);
+    await db.query(`
+      INSERT INTO items(name, price, img_url, description)
+      VALUES ('Welcome Stone', 10, 'premade/welcome-stone.jpg', NULL)
+      `);
+    await db.query(`
+      INSERT INTO items(name, price, img_url, description)
+      VALUES ('Large House', 10, 'premade/house-stone.jpg', NULL)
+      `);
+    await db.query(`
+      INSERT INTO items(name, price, img_url, description)
+      VALUES ('Small House', 6, 'premade/house-stone.jpg', NULL)
+      `);
+    await db.query(`
+      INSERT INTO items(name, price, img_url, description)
+      VALUES ('Sunflower', 8, 'premade/PP.29.03.20259.jpg', NULL)
+      `);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-  db.run(`
-    INSERT INTO items(name, price, img_url)
-    VALUES ('Butterfly', '8', 'premade/pebble-profile-picture.jpg')
-    `);
-  db.run(`
-    INSERT INTO items(name, price, img_url)
-    VALUES ('Robin', '5', 'premade/PP.29.03.202515.jpg')
-    `);
-  db.run(`
-    INSERT INTO items(name, price, img_url)
-    VALUES ('Welcome Stone', '10', 'premade/welcome-stone.jpg')
-    `);
-  db.run(`
-    INSERT INTO items(name, price, img_url)
-    VALUES ('Large House', '10', 'premade/house-stone.jpg')
-    `);
-  db.run(`
-    INSERT INTO items(name, price, img_url)
-    VALUES ('Small House', '6', 'premade/house-stone.jpg')
-    `);
-  db.run(`
-    INSERT INTO items(name, price, img_url)
-    VALUES ('Sunflower', '8', 'premade/PP.29.03.20259.jpg')
-    `);
-});
+seed();
 
 /*don't forget to prevent against SQL injection - this becomes relevant when coding for the user input - hmmmmmmm would that be in the sales table then??? - yes - create a function which does this, 
 i.e 

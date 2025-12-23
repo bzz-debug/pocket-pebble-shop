@@ -1,5 +1,8 @@
 const request = require("supertest");
 const app = require("./api/app.js");
+const { db } = require("./connect.js");
+
+afterAll(() => db.end());
 
 test("404: Responds with error object if non-existent endpoint given", () => {
   return request(app)
@@ -24,7 +27,7 @@ describe("GET /api/items", () => {
       });
   });
 });
-describe.only("GET/api/items:item_id", () => {
+describe("GET/api/items:item_id", () => {
   test("returns the specified item", () => {
     return request(app)
       .get("/api/items/2")
@@ -35,6 +38,23 @@ describe.only("GET/api/items:item_id", () => {
           name: expect.any(String),
           price: expect.any(Number),
         });
+      });
+  });
+});
+
+describe.only("POST /api/items", () => {
+  test("201 - responds with the posted item", () => {
+    return request(app)
+      .post("/api/items")
+      .send({
+        name: "new item test",
+        price: 4,
+        imgUrl: "ozifhaiofeh",
+        description: "new tings",
+      })
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("item added to the database");
       });
   });
 });
